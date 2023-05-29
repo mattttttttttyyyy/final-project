@@ -1,0 +1,30 @@
+<!-- <div class="input-group">
+<input
+    type="text"
+    class="form-control"
+    placeholder="Select date"
+    bsDatepicker
+    [(bsValue)]="selectedTime"
+  />
+
+  <timepicker
+    [(ngModel)]="selectedTime"
+    (ngModelChange)="onTimeChange($event)"
+  ></timepicker>
+</div> -->
+
+<!-- <ngb-datepicker
+  [(ngModel)]="selectedTime"
+  (dateSelect)="(selectedTime)"
+></ngb-datepicker> -->
+<ngb-datepicker
+  (dateSelect)="onDateSelect($event)"
+  [minDate]="minDate"
+></ngb-datepicker>
+
+<ngb-timepicker
+  [(ngModel)]="selectedTime"
+  (ngModelChange)="onTimeChange($event)"
+></ngb-timepicker>
+
+<button (click)="saveDateTime()">Save</button>
