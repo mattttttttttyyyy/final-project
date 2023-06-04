@@ -1,0 +1,87 @@
+<div class="container">
+  <!-- <ngb-datepicker
+    (dateSelect)="onDateSelect($event)"
+    [minDate]="minDate"
+  ></ngb-datepicker> -->
+  <mat-form-field>
+    <mat-label>Choose a date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      [min]="minDate"
+      [(ngModel)]="selected"
+    />
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker [startAt]="minDate"></mat-datepicker>
+  </mat-form-field>
+
+  <div class="date-container">
+    <ngb-timepicker
+      [(ngModel)]="selectedTime"
+      (ngModelChange)="onTimeChange($event)"
+    ></ngb-timepicker>
+
+    <ngb-timepicker
+      [(ngModel)]="selectedEndTime"
+      (ngModelChange)="onTimeChange($event)"
+    ></ngb-timepicker>
+    <!-- <form>
+      <mat-form-field appearance="outline">
+        <mat-label>Start time</mat-label>
+        <input
+          type="time"
+          matInput
+          min="09:00"
+          max="18:00"
+          id="startTime"
+          [matDatepicker]="picker"
+        />
+      </mat-form-field>
+    </form> -->
+  </div>
+  <button (click)="saveDateTime()" class="btn btn-light">Save</button>
+</div>
+<!--
+<form (ngSubmit)="createNewReservation()">
+  <div>
+    <mat-form-field>
+      <mat-label>Choose a date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [min]="minDate"
+        [(ngModel)]="selected"
+      />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker [startAt]="minDate"></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-label>Start time</mat-label>
+    <input
+      type="time"
+      id="startTime"
+      name="startTime"
+      placeholder="HH:mm:ss"
+      required
+      [(ngModel)]="selectedStartTime"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <mat-label>End time</mat-label>
+    <input
+      type="time"
+      id="name"
+      [(ngModel)]="selectedEndTimeTest"
+      name="endTime"
+      required
+    />
+  </div>
+  <button type="submit" class="btn btn-primary">Create booking</button>
+</form> -->

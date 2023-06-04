@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.date-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 23%;
+}
+ngb-datepicker ngb-dp-header.bg-dark {
+  color: #eee;
+  background-color: #333;
+}
+
+::ng-deep div.ngb-dp-arrow > button {
+  color: red;
+}
