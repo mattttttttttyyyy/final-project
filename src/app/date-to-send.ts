@@ -2,8 +2,10 @@ import { DateFormatterOptions } from 'ngx-bootstrap/chronos/types';
 
 export class DateToSend {
   'startTime': String;
-  static date: string;
-  constructor(date: String) {
+  'endTime': String;
+  static startDate: string;
+  constructor(date: String, time: String) {
     this.startTime = date;
+    this.endTime = time;
   }
 }

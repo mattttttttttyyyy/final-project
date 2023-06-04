@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <form (ngSubmit)="createConferenceRoom()">
+          <label for="conferenceRoomName" style="color: white"></label>
+          <input
+            type="text"
+            class="form-control"
+            id="conferenceRoomName"
+            [(ngModel)]="conferenceRoom.name"
+            name="conferenceRoomName"
+            required
+            style="color: rgb(30, 30, 30)"
+          />
+          <button type="submit" class="btn btn-primary custom-button">
+            Add conference room
+          </button>
+        </form>
+      </div>
+      <div class="conference-rooms">
+        <h3 style="color: white">Conference Rooms:</h3>
+        <div *ngIf="conferenceRooms.length > 0">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th style="color: white">Name</th>
+                <th style="color: white">Select</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let room of conferenceRooms">
+                <td style="color: white">{{ room.name }}</td>
+                <td>
+                  <button
+                    class="btn btn-primary custom-button"
+                    (click)="onRoomSelected(room.id)"
+                  >
+                    Select
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div *ngIf="conferenceRooms.length === 0">
+          <p style="color: white">No conference rooms found.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="date-picker-wrapper">
+        <app-date-picker
+          *ngIf="selectedRoomNumber !== undefined"
+          [roomNumber]="selectedRoomNumber"
+        ></app-date-picker>
+      </div>
+    </div>
+  </div>
+</div>

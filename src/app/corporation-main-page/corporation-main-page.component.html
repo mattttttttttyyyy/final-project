@@ -1,0 +1,10 @@
+<div *ngIf="corporation">
+  <div class="corporation-header">
+    <h1>{{ corporation.name }}</h1>
+  </div>
+
+  <app-conference-room
+    [corporationId]="corporation.id"
+    (roomSelected)="onRoomSelected($event)"
+  ></app-conference-room>
+</div>

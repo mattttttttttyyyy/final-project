@@ -1,13 +1,14 @@
+import { Component } from '@angular/core';
+import { Booking } from '../booking-component/booking';
+import { BookingComponentService } from '../booking-component/booking-component.service';
 import { DialogService } from './../dialog-service.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Input, OnDestroy, OnInit } from '@angular/core';
 import {
   NgbDateStruct,
   NgbTimeStruct,
   NgbCalendar,
   NgbTimepickerConfig,
 } from '@ng-bootstrap/ng-bootstrap';
-import { BookingComponentService } from './booking-component.service';
-import { Booking } from './booking';
 import { TimepickerConfig } from 'ngx-bootstrap/timepicker';
 import {
   FormBuilder,
@@ -26,15 +27,26 @@ import { AlertComponent } from '../alert/alert.component';
 import { MatDialog } from '@angular/material/dialog';
 import { handleError } from '../error-handler';
 import { BookingCalendarComponent } from '../booking-calendar/booking-calendar.component';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-date-picker',
-  templateUrl: './booking-component.component.html',
-  styleUrls: ['./booking-component.component.css'],
+  selector: 'app-booking-update',
+  templateUrl: './booking-update.component.html',
+  styleUrls: ['./booking-update.component.css'],
 })
-export class BookingComponentComponent implements OnInit {
-  @Input() roomNumber!: number;
-  [x: string]: any;
+export class BookingUpdateComponent {
+  bookingFound: boolean = false;
+  editBookingYes: boolean = false;
+  deleteBooking() {
+    console.log(this.booking.id);
+    this.bookingService.deleteBooking(this.booking.id);
+    this.router.navigate(['/']);
+  }
+  editBooking() {
+    this.editBookingYes = true;
+  }
+  booking: Booking = new Booking('', '');
+  uniqueId: string = '';
   TimepickerConfig: TimepickerConfig = new TimepickerConfig();
   selectedDate: NgbDateStruct = { year: 0, month: 0, day: 0 };
   selectedTime: NgbTimeStruct = { hour: 0, minute: 0, second: 0 };
@@ -56,14 +68,17 @@ export class BookingComponentComponent implements OnInit {
   mission: any;
   bookingsForSelectedDay: Booking[] = [];
   currentDate = new Date();
+  roomID: number = 0;
+  searchClicked: boolean = false;
 
   constructor(
+    private bookingService: BookingComponentService,
     private calendar: NgbCalendar,
     config: NgbTimepickerConfig,
-    private booking: BookingComponentService,
     private formBuilder: FormBuilder,
     public dialog: MatDialog,
-    private dialogService: DialogService
+    private dialogService: DialogService,
+    private router: Router
   ) {
     this.form = this.formBuilder.group({
       Time: [],
@@ -92,14 +107,20 @@ export class BookingComponentComponent implements OnInit {
       day: currentDate.getDate(),
     };
   }
-
-  ngOnInit(): void {
-    this.getBookingsForSelectedDay(this.currentDate);
-  }
-
   newCalendarSelect(date: Date): void {
     this.selected = date;
     console;
+  }
+  getFormattedDate(dateTime: string): string {
+    const date = new Date(dateTime);
+    const localDate =
+      date.getFullYear().toString().padStart(2, '0') +
+      '-' +
+      (date.getMonth() + 1).toString().padStart(2, '0') +
+      '-' +
+      date.getDate().toString().padStart(2, '0');
+
+    return localDate;
   }
 
   onDateSelect(date: NgbDateStruct): void {
@@ -132,10 +153,8 @@ export class BookingComponentComponent implements OnInit {
       this.isTimeValid = true;
     }
   }
-
   createNewReservation(): void {
     console.log(this.selectedStartTime);
-    // create date object for selected date
     const date = new Date(
       this.selected.getFullYear(),
       this.selected.getMonth(),
@@ -143,7 +162,7 @@ export class BookingComponentComponent implements OnInit {
     );
     this.Booking.startTime = this.selectedStartTime;
     this.Booking.endTime = this.selectedEndTimeTest;
-    this.booking.postDate(this.Booking).subscribe(() => {});
+    this.bookingService.postDate(this.Booking).subscribe(() => {});
   }
   getBookingsForSelectedDay(selectedDate: Date): void {
     const startOfDay = new Date(
@@ -157,16 +176,48 @@ export class BookingComponentComponent implements OnInit {
       selectedDate.getDate() + 1
     );
 
-    this.booking.getBookingsByDateAndRoom(startOfDay, this.number).subscribe(
-      (bookings: Booking[]) => {
-        this.bookingsForSelectedDay = bookings;
-      },
-      (error: HttpErrorResponse) => {
-        console.error('Error loading bookings:', error);
-      }
-    );
+    this.bookingService
+      .getBookingsByDateAndRoom(startOfDay, this.number)
+      .subscribe(
+        (bookings: Booking[]) => {
+          this.bookingsForSelectedDay = bookings;
+        },
+        (error: HttpErrorResponse) => {
+          console.error('Error loading bookings:', error);
+        }
+      );
   }
 
+  searchBooking(): void {
+    this.searchClicked = true;
+    this.bookingService
+      .getBookingByUniqueId(this.uniqueId)
+      .subscribe((booking: Booking) => {
+        if (booking) {
+          this.booking = booking;
+          console.log(this.booking.uniqueId);
+
+          this.bookingService
+            .getConferenceRoomID(this.uniqueId)
+            .subscribe((id) => {
+              this.booking.conferenceRoom = id;
+            });
+
+          this.bookingFound = true;
+        } else {
+          this.bookingFound = false;
+        }
+      });
+  }
+
+  getFormattedTime(dateTime: string): string {
+    const date = new Date(dateTime);
+    const localTime =
+      date.getHours().toString().padStart(2, '0') +
+      ':' +
+      date.getMinutes().toString().padStart(2, '0');
+    return localTime;
+  }
   saveDateTime(): void {
     if (this.selectedDate && this.selectedTime) {
       // Combine the selected date and time
@@ -189,18 +240,18 @@ export class BookingComponentComponent implements OnInit {
         this.selectedEndTime.minute
       );
 
-      // Check if end time is before start time, indicating it's on the next day
       if (endDateTime < startDate) {
-        // Increment the date by one day
         endDateTime.setDate(endDateTime.getDate() + 1);
       }
 
       this.newDate.startTime = startDate.toJSON();
       this.newDate.endTime = endDateTime.toJSON();
       const booking = new Booking(this.newDate.startTime, this.newDate.endTime);
-      console.log(booking.endTime);
-      this.booking
-        .createBooking(booking, this.roomNumber)
+      booking.uniqueId = this.uniqueId;
+      booking.conferenceRoom = this.booking.conferenceRoom;
+      booking.id = this.booking.id;
+      this.bookingService
+        .editBooking(this.uniqueId, booking)
         .pipe(
           map((response) => response.uniqueId),
           catchError((error) => {

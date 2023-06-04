@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SendDateService } from './send-date.service';
+import { BookingComponentService } from './booking-component.service';
 
 describe('SendDateService', () => {
-  let service: SendDateService;
+  let service: BookingComponentService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SendDateService);
+    service = TestBed.inject(BookingComponentService);
   });
 
   it('should be created', () => {

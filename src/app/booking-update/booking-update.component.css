@@ -1,11 +1,18 @@
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.custom-button {
+  background-color: #242424;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.custom-button:hover {
+  background-color: #555555;
 }
 
 .date-container {
+  margin-left: 100px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -21,6 +28,7 @@ ngb-datepicker ngb-dp-header.bg-dark {
 }
 
 .timepicker-container {
+  margin-left: 15%;
   margin-bottom: 5%;
   position: relative;
   display: inline-block;

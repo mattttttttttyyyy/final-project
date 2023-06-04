@@ -1,0 +1,10 @@
+.corporation-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1%;
+}
+
+.corporation-header h1 {
+  text-align: center;
+}
