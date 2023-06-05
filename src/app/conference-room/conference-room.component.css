@@ -5,6 +5,7 @@
 }
 
 .conference-rooms {
+  width: 100%;
   margin-bottom: 20px;
   margin-left: 15%;
 }
@@ -37,4 +38,37 @@
 
 .custom-button:hover {
   background-color: #555555;
+}
+
+.delete-button {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 13px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}
+
+.createRoomClass {
+  margin-left: 15%;
+  margin-bottom: 5%;
+}
+
+.table-striped > tbody > tr:nth-child(2n + 1) > td,
+.table-striped > tbody > tr:nth-child(2n + 1) > th {
+  background-color: rgb(35, 35, 35);
+}
+.table-striped > tbody > tr:nth-child(2n) > td,
+.table-striped > tbody > tr:nth-child(2n) > th {
+  background-color: rgb(53, 53, 53);
+}
+
+.table-striped > thead > tr > th {
+  background-color: rgb(83, 83, 83);
+  color: white;
+  font-size: large;
 }

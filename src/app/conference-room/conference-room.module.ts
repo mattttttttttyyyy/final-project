@@ -16,7 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ConferenceRoomComponent } from './conference-room.component';
-import { BookingComponentModule } from '../booking-component/booking-component.module'; // Update the path to the correct location
+import { BookingComponentModule } from '../booking-component/booking-component.module';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [ConferenceRoomComponent],
@@ -51,7 +52,8 @@ import { BookingComponentModule } from '../booking-component/booking-component.m
     MatIconModule,
     MatSelectModule,
     MatRadioModule,
-    BookingComponentModule, // Import the BookingComponentModule from the correct location
+    BookingComponentModule,
+    NgbCollapseModule,
   ],
 })
 export class ConferenceRoomModule {}

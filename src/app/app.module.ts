@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
 import { BookingComponentComponent } from './booking-component/booking-component.component';
 import { CorporationComponent } from './corporation/corporation.component';
 import { CorporationMainPageComponent } from './corporation-main-page/corporation-main-page.component';
+import { CorporationMainPageModule } from './corporation-main-page/corporation-main-page/corporation-main-page.module';
 import { BookingCalendarComponent } from './booking-calendar/booking-calendar.component';
 import { AllCorporationsComponent } from './all-corporations/all-corporations.component';
 import { BookingUpdateComponent } from './booking-update/booking-update.component';
@@ -33,7 +34,6 @@ import { BookingUpdateModule } from './booking-update/booking-update.module';
     AppComponent,
     AlertComponent,
     NavBarComponent,
-    CorporationMainPageComponent,
     AllCorporationsComponent,
   ],
   imports: [
@@ -56,6 +56,7 @@ import { BookingUpdateModule } from './booking-update/booking-update.module';
     NgIf,
     MatDialogModule,
     BookingUpdateModule,
+    CorporationMainPageModule,
     RouterModule.forRoot([
       { path: 'booking', component: BookingComponentComponent },
       { path: '', component: CorporationComponent },

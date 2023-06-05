@@ -15,6 +15,10 @@ const httpOptions = {
 export class ConferenceRoomService {
   private createConferenceRoomLink = 'http://localhost:8080/conferenceRoom/add';
   private getAllConferenceRooms = 'http://localhost:8080/conferenceRoom/all';
+  private changeConferenceRoomNameLink =
+    'http://localhost:8080/corporation/update';
+  private deleteConferenceRoomLink =
+    'http://localhost:8080/conferenceRoom/delete';
 
   constructor(private http: HttpClient) {}
 
@@ -39,6 +43,21 @@ export class ConferenceRoomService {
   ): Observable<ConferenceRoom[]> {
     return this.http.get<ConferenceRoom[]>(
       `http://localhost:8080/conferenceRoom/byCorpoId/${corporateID}`,
+      httpOptions
+    );
+  }
+
+  changeConferenceRoomName(conferenceRoom: ConferenceRoom): Observable<any> {
+    return this.http.patch(
+      `http://localhost:8080/conferenceRoom/update/${conferenceRoom.id}`,
+      conferenceRoom,
+      httpOptions
+    );
+  }
+
+  deleteConferenceRoom(conferenceRoomId: number): Observable<any> {
+    return this.http.delete(
+      this.deleteConferenceRoomLink + '/' + conferenceRoomId,
       httpOptions
     );
   }

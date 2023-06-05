@@ -10,8 +10,25 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./corporation-main-page.component.css'],
 })
 export class CorporationMainPageComponent implements OnInit {
+  isTextFieldOpen: boolean = false;
   corporation: Corporation | undefined;
   selectedRoomNumber!: number;
+  newName: string = '';
+  openTextField() {
+    this.isTextFieldOpen = true;
+  }
+
+  changeName(newName: String) {
+    if (this.corporation) {
+      this.corporation.name = newName;
+      this.corporationService
+        .changeCorporationName(this.corporation)
+        .subscribe(() => {
+          console.log('Corporation name changed successfully.');
+          this.isTextFieldOpen = false;
+        });
+    }
+  }
 
   constructor(
     private route: ActivatedRoute,

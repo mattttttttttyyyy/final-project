@@ -1,8 +1,8 @@
+import { Corporation } from './../corporation';
 import { CorporationComponent } from './corporation.component';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Corporation } from '../corporation';
 import { map } from 'rxjs/operators';
 
 const httpOptions = {
@@ -19,6 +19,7 @@ export class CorporationService {
   private getAllCorporations = 'http://localhost:8080/corporation/all';
   private getCorporationById = 'http://localhost:8080/corporation';
   private delteCorporation = 'http://localhost:8080/corporation/delete';
+  private updateCorporation = 'http://localhost:8080/corporation/update';
 
   constructor(private http: HttpClient) {}
   createCorporation(Corporation: Corporation): Observable<any> {
@@ -51,5 +52,13 @@ export class CorporationService {
         observe: 'response', // Set observe option to 'response' to access the full response
       })
       .pipe(map((response) => response.body as number));
+  }
+
+  changeCorporationName(Corporation: Corporation): Observable<any> {
+    return this.http.patch(
+      this.updateCorporation + '/' + Corporation.id,
+      Corporation,
+      httpOptions
+    );
   }
 }
